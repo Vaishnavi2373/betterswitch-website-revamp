@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-06T00:00:00Z",
+  "title": "Design System: Better Switch",
+  "extensions": {
+    "colorMeta": {
+      "signal-orange": {
+        "role": "primary",
+        "displayName": "Signal Orange",
+        "canonical": "oklch(57.7% 0.194 28.6)",
+        "tonalRamp": [
+          "oklch(20% 0.08 28.6)",
+          "oklch(30% 0.12 28.6)",
+          "oklch(40% 0.15 28.6)",
+          "oklch(50% 0.18 28.6)",
+          "oklch(57.7% 0.194 28.6)",
+          "oklch(65% 0.17 28.6)",
+          "oklch(75% 0.14 28.6)",
+          "oklch(90% 0.06 28.6)"
+        ]
+      },
+      "signal-orange-light": {
+        "role": "primary",
+        "displayName": "Signal Orange Light",
+        "canonical": "oklch(73.2% 0.15 52.9)",
+        "tonalRamp": [
+          "oklch(25% 0.06 52.9)",
+          "oklch(35% 0.09 52.9)",
+          "oklch(45% 0.11 52.9)",
+          "oklch(55% 0.13 52.9)",
+          "oklch(65% 0.15 52.9)",
+          "oklch(73.2% 0.15 52.9)",
+          "oklch(82% 0.10 52.9)",
+          "oklch(93% 0.04 52.9)"
+        ]
+      },
+      "void-black": {
+        "role": "neutral",
+        "displayName": "Void Black",
+        "canonical": "oklch(13.1% 0.004 286)",
+        "tonalRamp": [
+          "oklch(13.1% 0.004 286)",
+          "oklch(21% 0.006 286)",
+          "oklch(28% 0.006 286)",
+          "oklch(37% 0.006 286)",
+          "oklch(48% 0.005 286)",
+          "oklch(60% 0.005 286)",
+          "oklch(75% 0.004 286)",
+          "oklch(92% 0.003 286)"
+        ]
+      },
+      "system-green": {
+        "role": "tertiary",
+        "displayName": "System Green",
+        "canonical": "oklch(69.6% 0.155 163)",
+        "tonalRamp": [
+          "oklch(20% 0.06 163)",
+          "oklch(30% 0.09 163)",
+          "oklch(40% 0.12 163)",
+          "oklch(50% 0.14 163)",
+          "oklch(60% 0.15 163)",
+          "oklch(69.6% 0.155 163)",
+          "oklch(80% 0.10 163)",
+          "oklch(92% 0.04 163)"
+        ]
+      },
+      "system-purple": {
+        "role": "tertiary",
+        "displayName": "System Purple",
+        "canonical": "oklch(55.3% 0.213 292.7)",
+        "tonalRamp": [
+          "oklch(20% 0.08 292.7)",
+          "oklch(30% 0.12 292.7)",
+          "oklch(40% 0.16 292.7)",
+          "oklch(50% 0.20 292.7)",
+          "oklch(55.3% 0.213 292.7)",
+          "oklch(65% 0.18 292.7)",
+          "oklch(78% 0.12 292.7)",
+          "oklch(92% 0.04 292.7)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines only. Figtree at massive scale with tight tracking, weight 800." },
+      "headline": { "displayName": "Headline", "purpose": "Section headers. Figtree, weight 700, slightly smaller than display." },
+      "title": { "displayName": "Title", "purpose": "Card titles, subsection headers. Figtree weight 600." },
+      "body": { "displayName": "Body", "purpose": "Paragraph text. Figtree weight 400-500 for invisible readability." },
+      "label": { "displayName": "Label", "purpose": "Category tags, form labels. Always uppercase with wide tracking." },
+      "stat": { "displayName": "Stat", "purpose": "Large numerical callouts. Figtree weight 700." },
+      "mono": { "displayName": "Mono", "purpose": "Code snippets, technical labels. JetBrains Mono." }
+    },
+    "shadows": [
+      { "name": "ambient-glow", "value": "0 20px 50px -12px rgba(0,0,0,0.8)", "purpose": "Floating cards and overlays. Creates levitation." },
+      { "name": "cta-glow", "value": "0 0 40px -10px rgba(234,88,12,0.5)", "purpose": "Primary button hover. Orange-tinted signal." },
+      { "name": "nav-shadow", "value": "0 25px 50px -12px rgba(0,0,0,0.5)", "purpose": "Navigation bar persistent depth." },
+      { "name": "status-glow", "value": "0 0 10px rgba(249,115,22,0.5)", "purpose": "Status indicator dot glow effect." }
+    ],
+    "motion": [
+      { "name": "ease-expo-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Column reveals, text slide animations. Sharp deceleration." },
+      { "name": "ease-smooth", "value": "cubic-bezier(0.32, 0.72, 0, 1)", "purpose": "Nav transitions on scroll. Smooth and weighted." },
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default state transitions (hover, focus)." },
+      { "name": "duration-fast", "value": "300ms", "purpose": "Hover states, color transitions." },
+      { "name": "duration-medium", "value": "500ms", "purpose": "Nav resize, card hover, text reveal." },
+      { "name": "duration-slow", "value": "1000ms", "purpose": "Scroll-driven fade-in entrances." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main CTA button with animated conic-gradient border and orange hover glow.",
+      "html": "<button class=\"ds-btn-primary\"><span>Start Building</span><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: #09090b; color: #fff; padding: 20px 48px; border-radius: 9999px; border: none; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; position: relative; overflow: hidden; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s; } .ds-btn-primary:hover { transform: scale(1.02); box-shadow: 0 0 40px -10px rgba(234, 88, 12, 0.5); } .ds-btn-primary:focus-visible { outline: 2px solid #ea580c; outline-offset: 4px; } .ds-btn-primary:active { transform: scale(0.98); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Nav CTA with gradient fill and spinning border on hover.",
+      "html": "<button class=\"ds-btn-secondary\"><span>Get Started</span><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(to bottom, #27272a, #09090b); color: #a1a1aa; padding: 10px 24px; border-radius: 9999px; border: none; font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); transition: color 0.3s, transform 0.3s; } .ds-btn-secondary:hover { color: #fff; transform: translateY(-2px); } .ds-btn-secondary:focus-visible { outline: 2px solid #ea580c; outline-offset: 4px; }"
+    },
+    {
+      "name": "Feature Card",
+      "kind": "card",
+      "refersTo": "card-feature",
+      "description": "Semi-transparent card with gradient border and backdrop blur. Used for feature sections.",
+      "html": "<div class=\"ds-card-feature\"><div class=\"ds-card-feature__icon\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"/></svg></div><h3 class=\"ds-card-feature__title\">High-Performance API</h3><p class=\"ds-card-feature__body\">Connect to the payment network with unified API access.</p></div>",
+      "css": ".ds-card-feature { position: relative; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0)); backdrop-filter: blur(16px); border-radius: 2.5rem; padding: 40px; color: #fff; transition: border-color 0.5s; } .ds-card-feature__icon { width: 48px; height: 48px; border-radius: 16px; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 24px; color: #fff; } .ds-card-feature__title { font-family: 'Manrope', sans-serif; font-size: 1.25rem; font-weight: 600; letter-spacing: -0.025em; margin-bottom: 16px; } .ds-card-feature__body { font-family: 'Inter', sans-serif; font-size: 1.125rem; line-height: 1.625; color: #9ca3af; }"
+    },
+    {
+      "name": "Underline Input",
+      "kind": "input",
+      "refersTo": "input-underline",
+      "description": "Minimal underline-only input with floating label animation.",
+      "html": "<div class=\"ds-input-group\"><input class=\"ds-input\" type=\"text\" placeholder=\"Name\" required /><label class=\"ds-input-label\">Name</label></div>",
+      "css": ".ds-input-group { position: relative; } .ds-input { width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 12px 0; color: #fff; font-family: 'Inter', sans-serif; font-size: 1.125rem; outline: none; transition: border-color 0.3s; } .ds-input::placeholder { color: transparent; } .ds-input:focus { border-bottom-color: #ea580c; } .ds-input-label { position: absolute; left: 0; top: 12px; font-family: 'Inter', sans-serif; font-size: 1rem; color: #a1a1aa; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; transition: all 0.3s; pointer-events: none; } .ds-input:focus + .ds-input-label, .ds-input:not(:placeholder-shown) + .ds-input-label { top: -20px; font-size: 0.625rem; color: #ea580c; }"
+    },
+    {
+      "name": "Navigation Bar",
+      "kind": "nav",
+      "refersTo": "nav-bar",
+      "description": "Fixed floating pill nav that shrinks on scroll.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav__brand\">Better Switch</span><div class=\"ds-nav__links\"><a href=\"#\">Home</a><a href=\"#\">Solutions</a><a href=\"#\">About</a></div><button class=\"ds-btn-secondary\"><span>Get Started</span></button></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 32px; max-width: 64rem; width: 100%; padding: 16px 24px; background: rgba(0,0,0,0.6); backdrop-filter: blur(16px); border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); transition: all 0.5s cubic-bezier(0.32, 0.72, 0, 1); } .ds-nav__brand { font-family: 'Inter', sans-serif; font-size: 1.125rem; font-weight: 500; color: #fff; letter-spacing: -0.025em; } .ds-nav__links { display: flex; gap: 32px; } .ds-nav__links a { font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500; color: #9ca3af; text-decoration: none; transition: color 0.3s; } .ds-nav__links a:hover { color: #fff; }"
+    },
+    {
+      "name": "Status Pill",
+      "kind": "chip",
+      "refersTo": null,
+      "description": "Small rounded pill with status dot indicator. Used for announcements and status badges.",
+      "html": "<div class=\"ds-pill\"><span class=\"ds-pill__dot\"></span><span class=\"ds-pill__text\">Systems Operational</span></div>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 9999px; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0)); backdrop-filter: blur(8px); } .ds-pill__dot { width: 6px; height: 6px; border-radius: 9999px; background: #ea580c; box-shadow: 0 0 10px rgba(249, 115, 22, 0.5); } .ds-pill__text { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.8); letter-spacing: 0.05em; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Control Room",
+    "overview": "Better Switch is Payment Systems as a Service: the platform for people who launch payment companies. The visual system channels infrastructural confidence: precise, capable, understated. Every element communicates capability and control.\n\nThe aesthetic is light-first and typographically driven. Figtree headlines at extrabold weight establish authority; lighter weights deliver clarity. The color palette is Committed: a warm off-white canvas with a confident orange accent that carries 30-40% of brand-visible surface. This is not a restrained brand. It is a confident one.",
+    "keyCharacteristics": [
+      "Dark-dominant with intentional light mode parity",
+      "Typographic hierarchy over decorative elements",
+      "Single-accent color discipline (orange as signal, not theme)",
+      "Generous negative space punctuated by dense information displays",
+      "Choreographed scroll-driven entrances, not ambient animation",
+      "Gradient borders as structural articulation, not decoration"
+    ],
+    "rules": [
+      { "name": "The Signal Rule", "body": "Orange appears on no more than 10% of any screen surface. Its purpose is to direct attention, not to theme the page. If orange is everywhere, it signals nothing.", "section": "colors" },
+      { "name": "The Tinted Neutral Rule", "body": "Pure #000000 and #ffffff are never used. Every neutral carries a slight blue-zinc tint.", "section": "colors" },
+      { "name": "The Four-Register Rule", "body": "Manrope is for headlines. Inter is for prose. Geist is for numbers. Geist Mono is for code. Never cross registers.", "section": "typography" },
+      { "name": "The Flat-by-Default Rule", "body": "Surfaces are flat at rest. Depth appears only as a response to interaction or to separate a floating overlay from its context.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use Signal Orange exclusively for interactive elements, status indicators, and the footer CTA banner. Keep it under 10% of surface area per screen.",
+      "Do use the gradient-border system for surface articulation.",
+      "Do maintain the four-register type system: Manrope for headlines, Inter for prose, Geist for numbers, Geist Mono for code.",
+      "Do use tonal layering (opacity steps on white) to create depth on dark backgrounds.",
+      "Do respect prefers-reduced-motion for all scroll animations and continuous animations.",
+      "Do use uppercase + wide tracking (0.1em) for labels and category markers."
+    ],
+    "donts": [
+      "Don't use neon accents, blockchain terminology, or web3 visual language.",
+      "Don't use navy blue, conservative stock photography, or corporate banking visual patterns.",
+      "Don't use cartoon illustrations, pastel gradients, or playful consumer fintech aesthetics.",
+      "Don't use blurred product screenshots with gradient overlays as hero images.",
+      "Don't use the beige/cream/soft-gradient SaaS template aesthetic.",
+      "Don't use gradient text (background-clip: text with gradient).",
+      "Don't use border-left or border-right as colored accent stripes on cards.",
+      "Don't use identical card grids with icon + heading + text repeated.",
+      "Don't use modals as the first solution.",
+      "Don't use em dashes in copy."
+    ]
+  }
+}
