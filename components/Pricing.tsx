@@ -1,5 +1,7 @@
 import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
+import { Reveal } from './motion/Reveal';
+import { CALENDLY_URL } from '../lib/constants';
 
 const features = [
   '200+ payment connectors',
@@ -14,17 +16,18 @@ const features = [
 
 const Pricing: React.FC = () => {
   return (
-    <section id="pricing" className="py-32 px-6 md:px-12 lg:px-20 border-b border-border bg-canvas relative z-10">
+    <section id="pricing" className="py-section px-6 md:px-12 lg:px-20 border-b border-border bg-canvas relative z-10">
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-16">
+        <Reveal className="text-center mb-16">
           <h2 className="font-sans text-3xl md:text-4xl font-semibold text-gray-900 tracking-tight mb-6 leading-[1.1]">
             Transparent Pricing
           </h2>
           <p className="text-base font-medium text-gray-600 leading-relaxed">
             One-time setup, per-transaction thereafter. No hidden fees.
           </p>
-        </div>
+        </Reveal>
 
+        <Reveal delay={0.1}>
         <div className="bg-obsidian text-white p-8 md:p-10 rounded-xl shadow-2xl">
           <div className="flex items-center gap-2 mb-6">
             <span className="font-mono text-[10px] font-semibold text-accent uppercase tracking-[0.1em]">Setup + Transaction</span>
@@ -34,12 +37,12 @@ const Pricing: React.FC = () => {
             <div>
               <div className="text-sm text-white/50 mb-2">One-time setup fee</div>
               <div className="text-2xl font-semibold text-white">Custom</div>
-              <div className="text-sm text-white/40 mt-1">Based on system type and configuration</div>
+              <div className="text-sm text-white/60 mt-1">Based on system type and configuration</div>
             </div>
             <div>
-              <div className="text-sm text-white/50 mb-2">Per transaction</div>
+              <div className="text-sm text-white/60 mb-2">Per transaction</div>
               <div className="text-2xl font-semibold text-white">Volume-based</div>
-              <div className="text-sm text-white/40 mt-1">Scales with your transaction volume</div>
+              <div className="text-sm text-white/60 mt-1">Scales with your transaction volume</div>
             </div>
           </div>
 
@@ -56,15 +59,16 @@ const Pricing: React.FC = () => {
           </div>
 
           <a
-            href="https://calendly.com/biz-betterswitch/30min"
+            href={CALENDLY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group w-full py-3.5 rounded text-sm font-semibold transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] bg-white text-obsidian hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2"
+            className="focus-ring group w-full py-3.5 rounded text-sm font-semibold transition-all duration-300 ease-out hover:scale-[1.02] active:scale-[0.98] bg-white text-obsidian hover:shadow-[0_0_20px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2"
           >
             Book a Demo
             <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
           </a>
         </div>
+        </Reveal>
       </div>
     </section>
   );

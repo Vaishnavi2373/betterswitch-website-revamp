@@ -5,3 +5,50 @@
 html {
   scroll-behavior: smooth;
 }
+
+/* Accessibility: Respect motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable all animations */
+  .signal-path,
+  .node-context,
+  .node-assumptions,
+  .node-evidence,
+  .node-outcome,
+  .outcome-check,
+  .shimmer-layer,
+  [style*="animation"],
+  [class*="animate"] {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Performance optimizations */
+.signal-path,
+.node-context,
+.node-assumptions,
+.node-evidence,
+.node-outcome,
+.outcome-check {
+  will-change: stroke-dashoffset, transform;
+  transform: translateZ(0);
+}
+
+/* GPU acceleration for smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

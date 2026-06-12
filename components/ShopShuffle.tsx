@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const shops = [
   {
@@ -30,16 +30,20 @@ const shops = [
 export default function ShopShuffle() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
+  const flipTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIsFlipping(true);
-      setTimeout(() => {
+      flipTimeoutRef.current = setTimeout(() => {
         setActiveIndex(prev => (prev + 1) % shops.length);
         setIsFlipping(false);
       }, 400);
     }, 2500);
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      if (flipTimeoutRef.current) clearTimeout(flipTimeoutRef.current);
+    };
   }, []);
 
   return (

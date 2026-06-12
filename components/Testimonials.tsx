@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Testimonial, Statistic } from '../types';
-
-const AUTO_SCROLL_INTERVAL = 5000; // 5 seconds
+import { useCarousel } from '../hooks/useCarousel';
 
 const testimonialData: { content: Testimonial; stats: Statistic[] }[] = [
   {
@@ -50,95 +49,35 @@ const testimonialData: { content: Testimonial; stats: Statistic[] }[] = [
 ];
 
 const Testimonials: React.FC = () => {
-  const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
-  const [activeStats, setActiveStats] = useState(testimonialData[0].stats);
-  const [isPaused, setIsPaused] = useState(false);
-  const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const carousel = useCarousel({
+    itemCount: testimonialData.length,
+    autoPlayInterval: 5000,
+  });
 
-  const goToNext = useCallback(() => {
-    const next = (current + 1) % testimonialData.length;
-    setAnimating(true);
-    setActiveStats(testimonialData[next].stats);
-    // Use requestAnimationFrame for smoother animation timing
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        setCurrent(next);
-        requestAnimationFrame(() => {
-          setAnimating(false);
-        });
-      }, 50);
-    });
-  }, [current]);
-
-  const goToPrev = useCallback(() => {
-    const prev = current === 0 ? testimonialData.length - 1 : current - 1;
-    setAnimating(true);
-    setActiveStats(testimonialData[prev].stats);
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        setCurrent(prev);
-        requestAnimationFrame(() => {
-          setAnimating(false);
-        });
-      }, 50);
-    });
-  }, [current]);
-
-  // Auto-scroll effect - use ref to avoid stale closure issues
+  // Update animation state on carousel change
   useEffect(() => {
-    if (isPaused) return;
-
-    const interval = setInterval(() => {
-      setAnimating(true);
-      setCurrent(c => {
-        const next = (c + 1) % testimonialData.length;
-        setActiveStats(testimonialData[next].stats);
-        return next;
-      });
-      requestAnimationFrame(() => {
-        setTimeout(() => setAnimating(false), 50);
-      });
-    }, AUTO_SCROLL_INTERVAL);
-
-    return () => clearInterval(interval);
-  }, [isPaused]);
+    setAnimating(true);
+    const timer = setTimeout(() => setAnimating(false), 50);
+    return () => clearTimeout(timer);
+  }, [carousel.current]);
 
   const handleNext = () => {
-    // Clear existing pause timeout
-    if (pauseTimeoutRef.current) {
-      clearTimeout(pauseTimeoutRef.current);
-    }
-    setIsPaused(true);
-    goToNext();
-    // Resume auto-scroll after 10 seconds of inactivity
-    pauseTimeoutRef.current = setTimeout(() => setIsPaused(false), 10000);
+    carousel.pauseAutoPlay(10000);
+    carousel.goToNext();
   };
 
   const handlePrev = () => {
-    // Clear existing pause timeout
-    if (pauseTimeoutRef.current) {
-      clearTimeout(pauseTimeoutRef.current);
-    }
-    setIsPaused(true);
-    goToPrev();
-    // Resume auto-scroll after 10 seconds of inactivity
-    pauseTimeoutRef.current = setTimeout(() => setIsPaused(false), 10000);
+    carousel.pauseAutoPlay(10000);
+    carousel.goToPrev();
   };
 
-  // Cleanup pause timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (pauseTimeoutRef.current) {
-        clearTimeout(pauseTimeoutRef.current);
-      }
-    };
-  }, []);
+  const activeStats = testimonialData[carousel.current].stats;
 
   return (
     <>
       {/* Testimonials Carousel */}
-      <section id="customers" className="py-32 bg-obsidian text-white relative overflow-hidden">
+      <section id="customers" className="py-section bg-obsidian text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
         <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
@@ -147,17 +86,19 @@ const Testimonials: React.FC = () => {
                    {testimonialData.map((item, idx) => (
                      <div
                         key={item.content.id}
-                        className={`absolute top-0 left-0 w-full transition-all duration-700 ease-in-out flex flex-col justify-center ${idx === current ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-8 pointer-events-none -z-10'}`}
+                        role="tabpanel"
+                        aria-hidden={idx !== carousel.current}
+                        className={`absolute top-0 left-0 w-full transition-all duration-700 ease-in-out flex flex-col justify-center ${idx === carousel.current ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-8 pointer-events-none -z-10'}`}
                         style={{ willChange: 'opacity, transform' }}
                      >
-                       <h2 className="text-4xl font-semibold tracking-tighter mb-8">
-                         "{item.content.quote}"
-                       </h2>
+                       <blockquote className="text-4xl font-semibold tracking-tighter mb-8">
+                         &ldquo;{item.content.quote}&rdquo;
+                       </blockquote>
                        <div className="flex items-center gap-4">
-                          <img src={item.content.image} alt={item.content.author} className="w-12 h-12 rounded-full object-cover border border-white/10 shadow-sm" loading="lazy" fetchpriority="low" />
+                          <img src={item.content.image} alt={item.content.author} className="w-12 h-12 rounded-full object-cover border border-white/10 shadow-sm" loading="lazy" />
                           <div>
                              <div className="font-medium text-white">{item.content.author}</div>
-                             <div className="text-sm text-white/50">{item.content.role}</div>
+                             <div className="text-sm text-white/60">{item.content.role}</div>
                           </div>
                        </div>
                      </div>
@@ -165,28 +106,31 @@ const Testimonials: React.FC = () => {
                 </div>
 
                 <div className="flex items-center gap-3 mt-10">
-                   <button onClick={handlePrev} aria-label="Previous testimonial" className="group w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-all">
+                   <button 
+                     onClick={handlePrev} 
+                     aria-label="Previous testimonial"
+                     className="focus-ring group w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-all"
+                   >
                       <ChevronLeft size={18} />
                    </button>
-                   <button onClick={handleNext} aria-label="Next testimonial" className="group w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-all">
+                   <button 
+                     onClick={handleNext}
+                     aria-label="Next testimonial"
+                     className="focus-ring group w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-all"
+                   >
                       <ChevronRight size={18} />
                    </button>
                    {/* Progress dots */}
-                   <div className="flex items-center gap-1 ml-4" role="navigation" aria-label="Testimonial pagination">
+                   <div className="flex items-center gap-1 ml-4" role="tablist" aria-label="Testimonial pagination">
                      {testimonialData.map((_, idx) => (
-                       <div key={idx} className="p-4 cursor-pointer">
-                         <div
-                           role="button"
-                           tabIndex={0}
-                           aria-label={`Go to testimonial ${idx + 1} ${idx === current ? '(current)' : ''}`}
-                           aria-current={idx === current ? 'true' : undefined}
-                           className={`w-2 h-2 rounded-full transition-all duration-300 ${idx === current ? 'bg-white' : 'bg-white/30'}`}
-                           onClick={() => setCurrent(idx)}
-                           onKeyPress={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                             if (e.key === 'Enter' || e.key === ' ') {
-                               setCurrent(idx);
-                             }
-                           }}
+                       <div key={idx}>
+                         <button
+                           role="tab"
+                           tabIndex={idx === carousel.current ? 0 : -1}
+                           aria-label={`Go to testimonial ${idx + 1} ${idx === carousel.current ? '(current)' : ''}`}
+                           aria-selected={idx === carousel.current}
+                           className={`focus-ring w-3 h-3 p-2 rounded-full transition-all duration-300 ${idx === carousel.current ? 'bg-white' : 'bg-white/40'}`}
+                           onClick={() => carousel.goTo(idx)}
                          />
                        </div>
                      ))}

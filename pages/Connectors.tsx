@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import PageLayout from '../components/layout/PageLayout';
+import { CALENDLY_URL } from '../lib/constants';
 import { Search, Globe, CreditCard, Wallet, Landmark, ShoppingBag, Shield, Lock, Network } from 'lucide-react';
 
 type Connector = {
@@ -148,16 +148,6 @@ const categoryIcons: Record<string, React.ReactNode> = {
   'Card Network': <Network size={14} />,
 };
 
-const categoryColors: Record<string, string> = {
-  'Processor': 'bg-accent/10 text-accent',
-  'Wallet': 'bg-emerald-50 text-emerald-600',
-  'Bank Transfer': 'bg-amber-50 text-amber-700',
-  'BNPL': 'bg-purple-50 text-purple-600',
-  'Fraud & Risk': 'bg-rose-50 text-rose-600',
-  '3DS': 'bg-sky-50 text-sky-600',
-  'Card Network': 'bg-blue-50 text-blue-600',
-};
-
 const ConnectorsPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
@@ -173,10 +163,7 @@ const ConnectorsPage: React.FC = () => {
   }, [search, activeCategory, activeRegion]);
 
   return (
-    <div className="w-full relative bg-canvas min-h-screen">
-      <Header />
-
-      <main className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 pt-12 pb-24">
+    <PageLayout mainClassName="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 pt-12 pb-24">
         {/* Page header */}
         <div className="mb-10">
           <h1 className="font-sans text-3xl md:text-4xl font-semibold tracking-tight text-obsidian leading-[1.1] mb-3">
@@ -191,13 +178,14 @@ const ConnectorsPage: React.FC = () => {
         <div className="mb-5">
           <div className="relative max-w-sm">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+            <label htmlFor="connector-search" className="sr-only">Search connectors</label>
             <input
-              type="text"
+              id="connector-search"
+              type="search"
               placeholder="Search connectors..."
-              aria-label="Search connectors"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-border rounded-lg font-sans text-sm text-obsidian placeholder:text-gray-400 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-all"
+              className="focus-ring w-full pl-10 pr-4 py-2.5 bg-white border border-border rounded-lg font-sans text-sm text-obsidian placeholder:text-gray-400 focus:border-accent transition-all"
             />
           </div>
         </div>
@@ -212,15 +200,16 @@ const ConnectorsPage: React.FC = () => {
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-150 ${
+                  aria-pressed={activeCategory === cat}
+                  className={`focus-ring inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-150 ${
                     activeCategory === cat
                       ? 'bg-accent text-white shadow-sm'
-                      : 'bg-white border border-border/60 text-gray-500 hover:border-border hover:text-gray-700'
+                      : 'bg-white border border-border/60 text-gray-600 hover:border-border hover:text-gray-700'
                   }`}
                 >
                   {categoryIcons[cat]}
                   {cat === 'All' ? 'All' : cat}
-                  <span className={activeCategory === cat ? 'text-white/60' : 'text-gray-300'}>{count}</span>
+                  <span className={activeCategory === cat ? 'text-white/70' : 'text-gray-500'}>{count}</span>
                 </button>
               );
             })}
@@ -228,15 +217,16 @@ const ConnectorsPage: React.FC = () => {
 
           {/* Region */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider mr-1">Region</span>
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mr-1">Region</span>
             {regions.map((region) => (
               <button
                 key={region}
                 onClick={() => setActiveRegion(region)}
-                className={`px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all duration-150 ${
+                aria-pressed={activeRegion === region}
+                className={`focus-ring px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 ${
                   activeRegion === region
                     ? 'bg-obsidian text-white'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-white'
+                    : 'text-gray-600 hover:text-gray-700 hover:bg-white'
                 }`}
               >
                 {region === 'All Regions' ? 'All' : region}
@@ -246,7 +236,7 @@ const ConnectorsPage: React.FC = () => {
         </div>
 
         {/* Results count */}
-        <p className="text-[11px] font-medium text-gray-400 mb-5">
+        <p className="text-xs font-medium text-gray-500 mb-5" role="status" aria-live="polite">
           {filtered.length} connector{filtered.length !== 1 ? 's' : ''}
           {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}
           {activeRegion !== 'All Regions' ? ` · ${activeRegion}` : ''}
@@ -262,17 +252,23 @@ const ConnectorsPage: React.FC = () => {
                 className="group bg-white border border-border/40 rounded-xl p-4 transition-all duration-200 hover:border-border hover:shadow-[0_2px_8px_rgba(0,0,0,0.05)] hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-accent/20"
               >
                 <div className="flex flex-col items-center text-center gap-2.5">
-                  <div className="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                  <div className="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden bg-gray-50">
                     <img
                       src={`/connectors/${connector.logo}`}
                       alt={connector.name}
                       className="w-14 h-14 object-contain"
                       loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <h3 className="font-sans text-[12px] font-semibold text-obsidian leading-tight">
                     {connector.name}
                   </h3>
+                  <div className="text-xs text-gray-500 space-x-1">
+                    {connector.regions.map((region, idx) => (
+                      <span key={idx}>{region}</span>
+                    ))}
+                  </div>
                 </div>
               </div>
             ))}
@@ -290,23 +286,20 @@ const ConnectorsPage: React.FC = () => {
         )}
 
         {/* Bottom CTA */}
-        <div className="mt-12 flex items-center justify-between py-6 border-t border-border/60">
-          <p className="font-sans text-sm font-medium text-gray-500">
+        <div className="mt-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 border-t border-border/60">
+          <p className="font-sans text-sm font-medium text-gray-600">
             Need a connector not listed? We integrate custom connectors in one week.
           </p>
           <a
-            href="https://calendly.com/biz-betterswitch/30min"
+            href={CALENDLY_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-shrink-0 bg-accent text-white text-xs font-semibold px-5 py-2.5 rounded hover:bg-accent-hover transition-colors"
+            className="focus-ring flex-shrink-0 bg-accent text-white text-xs font-semibold px-5 py-2.5 rounded hover:bg-accent-hover transition-colors text-center"
           >
             Request Integration
           </a>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+    </PageLayout>
   );
 };
 

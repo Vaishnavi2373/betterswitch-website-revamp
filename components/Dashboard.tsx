@@ -48,16 +48,16 @@ const Dashboard: React.FC = () => {
           transform: translateY(0);
         }
       `}</style>
-      <section ref={sectionRef} className="py-24 px-6 md:px-12 lg:px-20 border-t border-border bg-white">
+      <section ref={sectionRef} className="py-section px-6 md:px-12 lg:px-20 border-t border-border bg-white">
         <div className={`max-w-7xl mx-auto dashboard-section-content ${isVisible ? 'visible' : ''}`}>
           <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-24 items-center">
 
             {/* Text Column */}
             <div className="md:col-span-4 space-y-8 mb-12 md:mb-0">
             <div className="space-y-4">
-              <h3 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 leading-tight">
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 leading-tight">
                 Beyond the checkout.
-              </h3>
+              </h2>
             </div>
 
             <div className="space-y-4 text-base font-medium text-gray-600 leading-relaxed">

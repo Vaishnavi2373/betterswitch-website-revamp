@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
 import { GitBranch, Building2, Users, Zap } from 'lucide-react';
+import { Reveal } from './motion/Reveal';
 
 const systemTypes = [
   {
@@ -41,9 +43,9 @@ const Solutions: React.FC = () => {
   const ActiveIcon = systemTypes[active].icon;
 
   return (
-    <section id="solutions" className="py-32 px-6 md:px-12 lg:px-20 relative z-10">
+    <section id="solutions" className="py-section px-6 md:px-12 lg:px-20 relative z-10">
       <div className="max-w-7xl mx-auto">
-        <div className="max-w-xl mb-16">
+        <Reveal className="max-w-xl mb-16">
           <h2 className="font-sans text-3xl md:text-4xl font-semibold text-gray-900 tracking-tight mb-6 leading-[1.1]">
             One Platform,
             <span className="text-gray-500 block">Four System Types.</span>
@@ -51,33 +53,45 @@ const Solutions: React.FC = () => {
           <p className="font-sans text-sm font-medium text-gray-600 leading-relaxed">
             Choose the payment system that fits your business model. Each one is fully white-labelled, PCI-compliant, and live in a day.
           </p>
-        </div>
+        </Reveal>
 
-        {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-10">
+        <div className="flex flex-wrap gap-2 mb-10" role="tablist" aria-label="Payment system types">
           {systemTypes.map((type, idx) => {
             const Icon = type.icon;
             return (
               <button
                 key={type.id}
+                role="tab"
+                id={`tab-${type.id}`}
+                aria-selected={idx === active}
+                aria-controls={`panel-${type.id}`}
                 onClick={() => setActive(idx)}
-                className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
+                className={`focus-ring inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
                   idx === active
                     ? 'bg-obsidian text-white shadow-md'
                     : 'bg-white border border-border text-gray-600 hover:border-gray-300 hover:text-gray-900'
                 }`}
               >
-                <Icon size={16} />
+                <Icon size={16} aria-hidden="true" />
                 {type.label}
               </button>
             );
           })}
         </div>
 
-        {/* Content */}
         <div className="bg-white border border-border rounded-xl shadow-surface overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2">
-            {/* Left: text */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={systemTypes[active].id}
+              id={`panel-${systemTypes[active].id}`}
+              role="tabpanel"
+              aria-labelledby={`tab-${systemTypes[active].id}`}
+              initial={{ opacity: 0, x: 12 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -12 }}
+              transition={{ duration: 0.25 }}
+              className="grid grid-cols-1 md:grid-cols-2"
+            >
             <div className="p-8 md:p-10 flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center text-accent">
@@ -342,7 +356,8 @@ const Solutions: React.FC = () => {
                 )}
               </svg>
             </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

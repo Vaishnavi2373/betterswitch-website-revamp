@@ -96,6 +96,35 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://www.googletagmanager.com">
 
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+      .sr-only:not(:focus):not(:active) {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        z-index: 9999;
+        padding: 0.75rem 1rem;
+        background: #e27533;
+        color: white;
+        font-weight: 600;
+        border-radius: 0.25rem;
+        text-decoration: none;
+      }
+      .skip-link:focus {
+        left: 1rem;
+        top: 1rem;
+      }
+    </style>
+
     <!-- Critical CSS - Inlined for immediate rendering -->
     <style>
       *, *::before, *::after { box-sizing: border-box; }
@@ -144,10 +173,6 @@
       }
     </style>
 
-    <!-- Defer Google Fonts -->
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet"></noscript>
-
     <!-- Custom Animations CSS -->
     <link rel="stylesheet" href="/styles/animations.css" />
     <style>
@@ -161,6 +186,9 @@
         document.body.classList.remove('tailwind-loading');
       });
     </script>
+    
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
     <div id="root"></div>
   <script type="module" src="/index.tsx"></script>
 

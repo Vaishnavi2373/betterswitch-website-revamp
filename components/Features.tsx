@@ -6,7 +6,7 @@ import ConnectorScroller from './ConnectorScroller';
 
 const Features: React.FC = () => {
   return (
-    <section id="platform" className="py-32 px-6 md:px-12 lg:px-20 relative z-10">
+    <section id="platform" className="py-section px-6 md:px-12 lg:px-20 relative z-10">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
           <div className="max-w-xl">

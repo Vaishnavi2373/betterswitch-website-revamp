@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 
 export default function ConnectorScroller() {
   const mainOrange = '#e27533';
@@ -91,7 +90,7 @@ export default function ConnectorScroller() {
         }
       `}</style>
 
-      <div className="flex items-center gap-5 w-full">
+      <div className="flex items-center gap-5 w-full" role="region" aria-label="Popular payment connectors carousel">
         {/* Scrolling connectors */}
         <div className="flex-1 overflow-hidden relative">
           {/* Left fade */}
@@ -108,13 +107,13 @@ export default function ConnectorScroller() {
               background: 'linear-gradient(to left, white 0%, transparent 100%)'
             }}
           />
-          <div className="flex gap-4 connector-scroll-animation">
+          <div className="flex gap-4 connector-scroll-animation" aria-hidden="true">
             {[...connectors, ...connectors, ...connectors].map((connector, index) => (
               <div
                 key={`${connector.name}-${index}`}
                 className="flex-shrink-0 w-36 h-20 bg-white rounded-lg flex items-center justify-center px-4"
               >
-                <div>
+                <div aria-label={`${connector.name} logo`}>
                   {connector.svg}
                 </div>
               </div>
@@ -123,32 +122,32 @@ export default function ConnectorScroller() {
         </div>
 
         {/* Plus button */}
-        <div
-          className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center"
+        <button
+          className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-accent/20"
           style={{
             backgroundColor: lightOrange,
             border: `1px solid ${mainOrange}`
           }}
+          aria-label="Add a new connector"
+          title="Add a new connector"
         >
-          <svg className="w-5 h-5" fill="none" stroke={mainOrange} viewBox="0 0 24 24">
+          <svg className="w-5 h-5" fill="none" stroke={mainOrange} viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
           </svg>
-        </div>
+        </button>
 
         {/* Your Connector box */}
         <div
-          className="flex-shrink-0 w-36 h-24 rounded-lg flex flex-col items-center justify-center"
-          style={{
-            backgroundColor: lightOrange
-          }}
+          className="flex-shrink-0 w-36 h-20 rounded-lg flex flex-col items-center justify-center px-3 transition-all hover:shadow-md focus-within:ring-2 focus-within:ring-accent/20"
+          style={{ backgroundColor: lightOrange }}
+          role="region"
+          aria-label="Request a new connector integration"
         >
-          {/* Electrical Plug icon */}
-          <svg className="w-7 h-7 mb-1" viewBox="0 0 24 24" fill={mainOrange}>
+          <svg className="w-7 h-7 mb-1" viewBox="0 0 24 24" fill={mainOrange} aria-hidden="true">
             <path d="M12 2C11.45 2 11 2.45 11 3V7H13V3C13 2.45 12.55 2 12 2ZM8 2C7.45 2 7 2.45 7 3V7H9V3C9 2.45 8.55 2 8 2ZM16 2C15.45 2 15 2.45 15 3V7H17V3C17 2.45 16.55 2 16 2ZM5 8V10C5 10.55 5.45 11 6 11H18C18.55 11 19 10.55 19 10V8H5ZM6 12C5.45 12 5 12.45 5 13V14C5 16.76 7.24 19 10 19V21C10 21.55 10.45 22 11 22H13C13.55 22 14 21.55 14 21V19C16.76 19 19 16.76 19 14V13C19 12.45 18.55 12 18 12H6Z"/>
           </svg>
-
           <span className="text-sm font-semibold text-gray-700">Your Connector</span>
-          <span className="text-[10px] text-gray-500">Local PSP</span>
+          <span className="text-xs text-gray-500">Local PSP</span>
         </div>
       </div>
     </>
