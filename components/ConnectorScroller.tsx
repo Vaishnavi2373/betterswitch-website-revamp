@@ -111,7 +111,7 @@ export default function ConnectorScroller() {
             {[...connectors, ...connectors, ...connectors].map((connector, index) => (
               <div
                 key={`${connector.name}-${index}`}
-                className="flex-shrink-0 w-36 h-20 bg-white rounded-lg flex items-center justify-center px-4"
+                className="flex-shrink-0 w-36 h-20 bg-white rounded-lg flex items-center justify-center px-4 border border-gray-100 shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
               >
                 <div aria-label={`${connector.name} logo`}>
                   {connector.svg}

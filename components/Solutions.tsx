@@ -46,7 +46,7 @@ const Solutions: React.FC = () => {
     <section id="solutions" className="py-section px-6 md:px-12 lg:px-20 relative z-10">
       <div className="max-w-7xl mx-auto">
         <Reveal className="max-w-xl mb-16">
-          <h2 className="font-sans text-3xl md:text-4xl font-semibold text-gray-900 tracking-tight mb-6 leading-[1.1]">
+          <h2 className="font-sans text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tighter mb-6 leading-[1.1]">
             One Platform,
             <span className="text-gray-500 block">Four System Types.</span>
           </h2>

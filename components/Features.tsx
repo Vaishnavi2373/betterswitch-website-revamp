@@ -10,7 +10,7 @@ const Features: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
           <div className="max-w-xl">
-            <h2 className="font-sans text-3xl md:text-4xl font-semibold text-gray-900 tracking-tight mb-6 leading-[1.1]">
+            <h2 className="font-sans text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tighter mb-6 leading-[1.1]">
               Everything You Need
               <span className="text-gray-500 block">to Run a Payment Company.</span>
             </h2>

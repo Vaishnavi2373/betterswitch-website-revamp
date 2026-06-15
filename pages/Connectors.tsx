@@ -152,6 +152,25 @@ const ConnectorsPage: React.FC = () => {
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [activeRegion, setActiveRegion] = useState('All Regions');
+  const [showRequestModal, setShowRequestModal] = useState(false);
+  const [requestedName, setRequestedName] = useState('');
+  const [requestedEmail, setRequestedEmail] = useState('');
+  const [requestNotes, setRequestNotes] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleRequestSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!requestedName || !requestedEmail) return;
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setShowRequestModal(false);
+      setIsSubmitted(false);
+      setRequestedName('');
+      setRequestedEmail('');
+      setRequestNotes('');
+      alert(`Request received! We will coordinate the implementation of ${requestedName} with you shortly.`);
+    }, 1500);
+  };
 
   const filtered = useMemo(() => {
     return connectors.filter((c) => {
@@ -163,10 +182,10 @@ const ConnectorsPage: React.FC = () => {
   }, [search, activeCategory, activeRegion]);
 
   return (
-    <PageLayout mainClassName="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 pt-12 pb-24">
+    <PageLayout mainClassName="max-w-7xl mx-auto px-6 md:px-12 lg:px-20 pt-12 pb-24 relative">
         {/* Page header */}
         <div className="mb-10">
-          <h1 className="font-sans text-3xl md:text-4xl font-semibold tracking-tight text-obsidian leading-[1.1] mb-3">
+          <h1 className="font-sans text-3xl md:text-4xl font-extrabold tracking-tighter text-obsidian leading-[1.1] mb-3">
             200+ Payment Connectors
           </h1>
           <p className="font-sans text-sm font-medium text-gray-500 leading-relaxed max-w-lg">
@@ -174,8 +193,9 @@ const ConnectorsPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Search */}
-        <div className="mb-5">
+        {/* Search & Filters Toolbar */}
+        <div className="bg-white border border-gray-200/80 rounded-xl p-6 shadow-sm mb-8 space-y-5">
+          {/* Search */}
           <div className="relative max-w-sm">
             <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <label htmlFor="connector-search" className="sr-only">Search connectors</label>
@@ -188,55 +208,55 @@ const ConnectorsPage: React.FC = () => {
               className="focus-ring w-full pl-10 pr-4 py-2.5 bg-white border border-border rounded-lg font-sans text-sm text-obsidian placeholder:text-gray-400 focus:border-accent transition-all"
             />
           </div>
-        </div>
 
-        {/* Filters */}
-        <div className="flex flex-col gap-3 mb-6 pb-6 border-b border-border/60">
-          {/* Category */}
-          <div className="flex flex-wrap gap-1.5">
-            {categories.map((cat) => {
-              const count = cat === 'All' ? connectors.length : connectors.filter(c => c.category === cat).length;
-              return (
+          {/* Filters */}
+          <div className="flex flex-col gap-3 pt-3 border-t border-gray-100">
+            {/* Category */}
+            <div className="flex flex-wrap gap-1.5">
+              {categories.map((cat) => {
+                const count = cat === 'All' ? connectors.length : connectors.filter(c => c.category === cat).length;
+                return (
+                  <button
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    aria-pressed={activeCategory === cat}
+                    className={`focus-ring inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-150 ${
+                      activeCategory === cat
+                        ? 'bg-accent text-white shadow-sm'
+                        : 'bg-white border border-border/60 text-gray-600 hover:border-border hover:text-gray-700'
+                    }`}
+                  >
+                    {categoryIcons[cat]}
+                    {cat === 'All' ? 'All' : cat}
+                    <span className={activeCategory === cat ? 'text-white/70' : 'text-gray-500'}>{count}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Region */}
+            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mr-2">Region</span>
+              {regions.map((region) => (
                 <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  aria-pressed={activeCategory === cat}
-                  className={`focus-ring inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold transition-all duration-150 ${
-                    activeCategory === cat
-                      ? 'bg-accent text-white shadow-sm'
-                      : 'bg-white border border-border/60 text-gray-600 hover:border-border hover:text-gray-700'
+                  key={region}
+                  onClick={() => setActiveRegion(region)}
+                  aria-pressed={activeRegion === region}
+                  className={`focus-ring px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
+                    activeRegion === region
+                      ? 'bg-obsidian text-white'
+                      : 'text-gray-600 hover:text-gray-700 hover:bg-gray-50'
                   }`}
                 >
-                  {categoryIcons[cat]}
-                  {cat === 'All' ? 'All' : cat}
-                  <span className={activeCategory === cat ? 'text-white/70' : 'text-gray-500'}>{count}</span>
+                  {region === 'All Regions' ? 'All' : region}
                 </button>
-              );
-            })}
-          </div>
-
-          {/* Region */}
-          <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider mr-1">Region</span>
-            {regions.map((region) => (
-              <button
-                key={region}
-                onClick={() => setActiveRegion(region)}
-                aria-pressed={activeRegion === region}
-                className={`focus-ring px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 ${
-                  activeRegion === region
-                    ? 'bg-obsidian text-white'
-                    : 'text-gray-600 hover:text-gray-700 hover:bg-white'
-                }`}
-              >
-                {region === 'All Regions' ? 'All' : region}
-              </button>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Results count */}
-        <p className="text-xs font-medium text-gray-500 mb-5" role="status" aria-live="polite">
+        <p className="text-xs font-semibold text-gray-500 mb-5" role="status" aria-live="polite">
           {filtered.length} connector{filtered.length !== 1 ? 's' : ''}
           {activeCategory !== 'All' ? ` in ${activeCategory}` : ''}
           {activeRegion !== 'All Regions' ? ` · ${activeRegion}` : ''}
@@ -245,26 +265,26 @@ const ConnectorsPage: React.FC = () => {
 
         {/* Grid */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {filtered.map((connector) => (
               <div
                 key={connector.name}
-                className="group bg-white border border-border/40 rounded-xl p-4 transition-all duration-200 hover:border-border hover:shadow-[0_2px_8px_rgba(0,0,0,0.05)] hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-accent/20"
+                className="group bg-white border border-gray-200 rounded-xl p-4 transition-all duration-300 hover:border-accent/30 hover:shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:-translate-y-0.5 focus-within:ring-2 focus-within:ring-accent/20"
               >
-                <div className="flex flex-col items-center text-center gap-2.5">
-                  <div className="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden bg-gray-50">
+                <div className="flex flex-col items-center text-center gap-3">
+                  <div className="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden bg-[#F8FAFC] border border-gray-100 p-2 group-hover:bg-white group-hover:border-accent/10 transition-colors">
                     <img
                       src={`/connectors/${connector.logo}`}
                       alt={connector.name}
-                      className="w-14 h-14 object-contain"
+                      className="w-12 h-12 object-contain"
                       loading="lazy"
                       decoding="async"
                     />
                   </div>
-                  <h3 className="font-sans text-[12px] font-semibold text-obsidian leading-tight">
+                  <h3 className="font-sans text-[13px] font-bold text-obsidian leading-tight">
                     {connector.name}
                   </h3>
-                  <div className="text-xs text-gray-500 space-x-1">
+                  <div className="text-[10px] font-semibold text-gray-400 uppercase tracking-wider space-x-1">
                     {connector.regions.map((region, idx) => (
                       <span key={idx}>{region}</span>
                     ))}
@@ -274,11 +294,11 @@ const ConnectorsPage: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16">
-            <p className="font-sans text-sm font-medium text-gray-400 mb-2">No connectors found</p>
+          <div className="text-center py-16 bg-white border border-gray-200 rounded-xl shadow-sm">
+            <p className="font-sans text-sm font-semibold text-gray-400 mb-2">No connectors found matching filters</p>
             <button
               onClick={() => { setSearch(''); setActiveCategory('All'); setActiveRegion('All Regions'); }}
-              className="text-xs font-medium text-accent hover:underline focus:outline-none focus:ring-2 focus:ring-accent/20 rounded px-2 py-1"
+              className="text-xs font-bold text-accent hover:underline focus:outline-none focus:ring-2 focus:ring-accent/20 rounded px-2.5 py-1.5"
             >
               Clear all filters
             </button>
@@ -286,19 +306,95 @@ const ConnectorsPage: React.FC = () => {
         )}
 
         {/* Bottom CTA */}
-        <div className="mt-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-6 border-t border-border/60">
-          <p className="font-sans text-sm font-medium text-gray-600">
-            Need a connector not listed? We integrate custom connectors in one week.
-          </p>
-          <a
-            href={CALENDLY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="focus-ring flex-shrink-0 bg-accent text-white text-xs font-semibold px-5 py-2.5 rounded hover:bg-accent-hover transition-colors text-center"
+        <div className="mt-12 bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h3 className="text-sm font-bold text-obsidian">Need a connector not listed here?</h3>
+            <p className="font-sans text-xs font-semibold text-gray-500 leading-relaxed">
+              We integrate custom local processors and third-party APIs within one week, at zero extra cost.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowRequestModal(true)}
+            className="focus-ring flex-shrink-0 bg-accent text-white text-xs font-bold px-6 py-3 rounded-lg hover:bg-accent-hover transition-colors text-center shadow-sm"
           >
-            Request Integration
-          </a>
+            Request Custom Integration
+          </button>
         </div>
+
+        {/* Request Modal */}
+        {showRequestModal && (
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-[fadeIn_0.2s_ease-out]">
+            <div className="bg-white border border-gray-200 rounded-2xl max-w-md w-full shadow-2xl p-6 overflow-hidden">
+              <div className="flex justify-between items-center mb-4 pb-3 border-b border-gray-100">
+                <h3 className="text-base font-bold text-obsidian">Request Custom Connector</h3>
+                <button
+                  onClick={() => setShowRequestModal(false)}
+                  className="text-gray-400 hover:text-obsidian text-sm font-bold"
+                  aria-label="Close modal"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <form onSubmit={handleRequestSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="connector-name" className="block text-xs font-bold text-gray-600 mb-1">Connector / PSP Name</label>
+                  <input
+                    id="connector-name"
+                    type="text"
+                    required
+                    placeholder="e.g. M-Pesa, PayFast, custom bank gateway..."
+                    value={requestedName}
+                    onChange={(e) => setRequestedName(e.target.value)}
+                    className="focus-ring w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-obsidian placeholder:text-gray-400 focus:border-accent"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="requester-email" className="block text-xs font-bold text-gray-600 mb-1">Your Corporate Email</label>
+                  <input
+                    id="requester-email"
+                    type="email"
+                    required
+                    placeholder="you@company.com"
+                    value={requestedEmail}
+                    onChange={(e) => setRequestedEmail(e.target.value)}
+                    className="focus-ring w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-obsidian placeholder:text-gray-400 focus:border-accent"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="request-notes" className="block text-xs font-bold text-gray-600 mb-1">Implementation Notes (Optional)</label>
+                  <textarea
+                    id="request-notes"
+                    rows={3}
+                    placeholder="Preferred regions, sandbox API details, timeline requirements..."
+                    value={requestNotes}
+                    onChange={(e) => setRequestNotes(e.target.value)}
+                    className="focus-ring w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-lg text-sm text-obsidian placeholder:text-gray-400 focus:border-accent"
+                  />
+                </div>
+
+                <div className="pt-2 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowRequestModal(false)}
+                    className="px-4 py-2.5 border border-gray-200 text-gray-600 hover:bg-gray-50 rounded-lg text-xs font-bold transition-all"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitted}
+                    className="px-5 py-2.5 bg-accent hover:bg-accent-hover text-white rounded-lg text-xs font-bold shadow-sm transition-all disabled:bg-gray-400"
+                  >
+                    {isSubmitted ? 'Submitting...' : 'Submit Request'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
     </PageLayout>
   );
 };

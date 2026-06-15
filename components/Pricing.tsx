@@ -19,7 +19,7 @@ const Pricing: React.FC = () => {
     <section id="pricing" className="py-section px-6 md:px-12 lg:px-20 border-b border-border bg-canvas relative z-10">
       <div className="max-w-3xl mx-auto">
         <Reveal className="text-center mb-16">
-          <h2 className="font-sans text-3xl md:text-4xl font-semibold text-gray-900 tracking-tight mb-6 leading-[1.1]">
+          <h2 className="font-sans text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tighter mb-6 leading-[1.1]">
             Transparent Pricing
           </h2>
           <p className="text-base font-medium text-gray-600 leading-relaxed">
